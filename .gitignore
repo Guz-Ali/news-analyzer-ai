@@ -8,5 +8,8 @@ media
 
 # logs #
 */cred.txt
+
+# prod
 .venv
 venv/
+web_project/static/
