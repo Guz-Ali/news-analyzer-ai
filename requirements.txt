@@ -7,3 +7,5 @@ Pillow
 soupsieve==2.5
 sqlparse==0.4.3
 typing_extensions==4.12.2
+newsapi-python
+google.generativeai
