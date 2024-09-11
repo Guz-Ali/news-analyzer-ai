@@ -38,6 +38,7 @@ ALLOWED_HOSTS = ["www.aliguzelyel.com", config["IP_ADDRESS"]]
 INSTALLED_APPS = [
     "blog.apps.BlogConfig",
     "user.apps.UserConfig",
+    "analyzer.apps.AnalyzerConfig",
     "crispy_forms",
     "crispy_bootstrap4",
     "django.contrib.admin",
