@@ -6,11 +6,15 @@
             <img class="rounded-circle article-img" src="{{ analysis.author.profile.image.url }}">
             <div class="media-body">
                 <div class="article-metadata">
-                    <a class="mr-2" href="{% url 'user-analyses' analyses.author.username %}">{{ analysis.author }}</a>
+                    <a class="mr-2" href="{% url 'user-analyses' analysis.author.username %}">{{ analysis.author }}</a>
                     <small class="text-muted">{{ analysis.date_posted|date:"F d, Y" }}</small>
                 </div>
-                <h2><a class="article-title" href="{% url 'analysis-detail' analysis.id %}">{{ analysis.title }}</a></h2>
-                <p class="article-content">{{ analysis.content }}</p>
+                <h2 class="article-title">{{ analysis.title }}</h2>
+                <p class="analysis-keywords">Keywords: {{ analysis.keywords }}</p>
+                <p class="analysis-prompt">Prompt: {{ analysis.prompt }}</p>
+                <p class="analysis-findings">Findings: {{ analysis.findings }}</p>
+                <p class="analysis-date_range_start">Date Range Start: {{ analysis.date_range_start }}</p>
+                <p class="analysis-date_range_end">Date Range End: {{ analysis.date_range_end }}</p>
             </div>
         </article>
     {% endfor %}

@@ -48,13 +48,24 @@ class TestViews(TestCase):
         )
 
         self.analysis_create_url = reverse("analyzer-home")
-        self.analysis_detail = reverse("analysis-detail", args=[self.analysis.id])
+        self.analysis_detail_url = reverse("analysis-detail", args=[self.analysis.id])
+        self.analysis_delete_url = reverse("analysis-delete", args=[self.analysis.id])
+        self.user_analyses_url = reverse("user-analyses", args=[self.user.username])
 
     def test_analysis_detail_GET(self):
-        response = self.client.get(self.analysis_detail)
+        response = self.client.get(self.analysis_detail_url)
 
         self.assertEquals(response.status_code, 200)
         self.assertEquals(Analysis.objects.count(), 1)
+
+    def test_user_analyses_GET(self):
+        response = self.client.get(self.user_analyses_url)
+
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(
+            Analysis.objects.filter(author=self.user.id).count(),
+            len(response.context["object_list"]),
+        )
 
     def test_analysis_create_POST(self):
         response = self.client.post(
@@ -73,3 +84,9 @@ class TestViews(TestCase):
         self.assertEquals(response.status_code, 302)
         self.assertEquals(Analysis.objects.count(), 2)
         self.assertEquals(Analysis.objects.last().title, "test_analysis")
+
+    def test_analysis_delete_DELETE(self):
+        response = self.client.delete(self.analysis_delete_url)
+
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(Analysis.objects.count(), 0)

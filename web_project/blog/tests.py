@@ -53,7 +53,6 @@ class TestViews(TestCase):
 
     def test_user_posts_GET(self):
         response = self.client.get(self.user_posts_url)
-        print(response.context)
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, "blog/user_posts.html")
