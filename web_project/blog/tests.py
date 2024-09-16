@@ -7,7 +7,9 @@ from django.urls import reverse
 
 class TestModels(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username="testuser", password="password")
+        self.user = User.objects.create_user(
+            username="testuser", email="em@gmail.com", password="password"
+        )
 
     def test_model_Post(self):
         post = Post.objects.create(
@@ -41,12 +43,24 @@ class TestViews(TestCase):
         self.post_detail_url = reverse("post-detail", args=[self.post.id])
         self.post_edit_url = reverse("post-update", args=[self.post.id])
         self.post_delete_url = reverse("post-delete", args=[self.post.id])
+        self.user_posts_url = reverse("user-posts", args=[self.user.username])
 
     def test_home_GET(self):
         response = self.client.get(self.home_url)
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, "blog/home.html")
+
+    def test_user_posts_GET(self):
+        response = self.client.get(self.user_posts_url)
+        print(response.context)
+
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, "blog/user_posts.html")
+        self.assertEquals(
+            Post.objects.filter(author=self.user.id).count(),
+            len(response.context["object_list"]),
+        )
 
     def test_post_detail_GET(self):
         response = self.client.get(self.post_detail_url)

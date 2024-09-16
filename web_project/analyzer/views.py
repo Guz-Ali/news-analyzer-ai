@@ -1,18 +1,12 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.views.generic import (
     ListView,
     DetailView,
     CreateView,
-    UpdateView,
-    DeleteView,
 )
 from .models import Analysis
-
-
-# def home(request):
-#     return render(request, "analyzer/analysis.html")
 
 
 class AnalysisCreateView(LoginRequiredMixin, CreateView):
