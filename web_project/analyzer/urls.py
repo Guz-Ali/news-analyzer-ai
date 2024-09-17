@@ -4,6 +4,7 @@ from .views import (
     AnalysisDetailView,
     UserAnalysisListView,
     AnalysisDeleteView,
+    publishAsPost,
 )
 
 
@@ -19,5 +20,10 @@ urlpatterns = [
         "analysis/<int:pk>/delete/",
         AnalysisDeleteView.as_view(),
         name="analysis-delete",
+    ),
+    path(
+        "analysis/<int:pk>/publish/",
+        publishAsPost,
+        name="analysis-publish",
     ),
 ]

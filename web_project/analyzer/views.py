@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.views.generic import (
     ListView,
     DetailView,
@@ -8,6 +9,8 @@ from django.views.generic import (
     DeleteView,
 )
 from .models import Analysis
+from .tasks import createPostFromAnalysis
+from blog.models import Post
 
 
 class AnalysisCreateView(LoginRequiredMixin, CreateView):
@@ -19,11 +22,15 @@ class AnalysisCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class AnalysisDetailView(DetailView):
+class AnalysisDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = Analysis
 
+    def test_func(self):
+        analysis = self.get_object()
+        return self.request.user == analysis.author
 
-class UserAnalysisListView(ListView):
+
+class UserAnalysisListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = Analysis
     template_name = "analyzer/user_analyses.html"  # <app>/<model>_<viewtype>.html
     context_object_name = "analyses"
@@ -33,6 +40,10 @@ class UserAnalysisListView(ListView):
         user = get_object_or_404(User, username=self.kwargs.get("username"))
         return Analysis.objects.filter(author=user).order_by("-date_posted")
 
+    def test_func(self):
+        analysis = self.get_queryset().first()
+        return self.request.user == analysis.author
+
 
 class AnalysisDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Analysis
@@ -41,3 +52,35 @@ class AnalysisDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         analysis = self.get_object()
         return self.request.user == analysis.author
+
+
+@login_required
+def publishAsPost(request, *args, **kwargs):
+    if request.method == "POST":
+        analysis = Analysis.objects.get(id=kwargs.get("pk"))
+        if request.user == analysis.author:
+            try:
+                post = Post.objects.get(analysis=analysis)
+            except:
+                post = createPostFromAnalysis(analysis)
+            post.is_public = True
+            post.save()
+            return render(request, "blog/post_detail.html", {"object": post})
+    else:
+        analysis = Analysis.objects.get(id=kwargs.get("pk"))
+        return render(request, "analyzer/analysis_detail.html", {"object": analysis})
+
+
+"""
+FIX not matching query on when post is deleted but analysis stays.
+Options: 
+1. when post is deleted, analysis is deleted too.
+2. instead of 'delete' use un-publish/make private again.
+
+DONE:
+Regardless, if analysis is deleted, then post should be deleted too.
+This tells me that we should be looking into one-to-one relationships, 
+which also includes delete.on_cascade.
+
+
+"""

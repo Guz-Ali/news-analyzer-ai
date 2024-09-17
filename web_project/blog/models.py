@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
+from analyzer.models import Analysis
 
 
 class Post(models.Model):
@@ -9,6 +10,10 @@ class Post(models.Model):
     content = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    is_public = models.BooleanField(default=True)
+    analysis = models.OneToOneField(
+        Analysis, blank=True, null=True, on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return self.title
