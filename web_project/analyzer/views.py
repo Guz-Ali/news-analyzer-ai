@@ -56,31 +56,14 @@ class AnalysisDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 @login_required
 def publishAsPost(request, *args, **kwargs):
-    if request.method == "POST":
-        analysis = Analysis.objects.get(id=kwargs.get("pk"))
-        if request.user == analysis.author:
-            try:
-                post = Post.objects.get(analysis=analysis)
-            except:
-                post = createPostFromAnalysis(analysis)
-            post.is_public = True
-            post.save()
-            return render(request, "blog/post_detail.html", {"object": post})
-    else:
-        analysis = Analysis.objects.get(id=kwargs.get("pk"))
+    analysis = Analysis.objects.get(id=kwargs.get("pk"))
+    if request.method != "POST" or request.user != analysis.author:
         return render(request, "analyzer/analysis_detail.html", {"object": analysis})
 
-
-"""
-FIX not matching query on when post is deleted but analysis stays.
-Options: 
-1. when post is deleted, analysis is deleted too.
-2. instead of 'delete' use un-publish/make private again.
-
-DONE:
-Regardless, if analysis is deleted, then post should be deleted too.
-This tells me that we should be looking into one-to-one relationships, 
-which also includes delete.on_cascade.
-
-
-"""
+    try:
+        post = Post.objects.get(analysis=analysis)
+    except:
+        post = createPostFromAnalysis(analysis)
+    post.is_public = True
+    post.save()
+    return render(request, "blog/post_detail.html", {"object": post})
