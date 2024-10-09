@@ -1,4 +1,5 @@
 from blog.models import Post
+from blog.tasks import NewsClient, AIModel
 from .models import Analysis
 
 
@@ -15,3 +16,7 @@ def createPostFromAnalysis(analysis: Analysis):
         return post
     else:
         return None
+
+
+class AINewsAnalyzer(NewsClient, AIModel):
+    pass
