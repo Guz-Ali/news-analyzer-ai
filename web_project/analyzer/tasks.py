@@ -16,7 +16,3 @@ def createPostFromAnalysis(analysis: Analysis):
         return post
     else:
         return None
-
-
-class AINewsAnalyzer(NewsClient, AIModel):
-    pass
