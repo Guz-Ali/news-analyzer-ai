@@ -126,12 +126,12 @@ class AINewsGenerator:
             return None
         
 
-    def create_ai_post(self, ai_news_text, filename):
+    def create_ai_post(self, ai_news_text):
         ai_post = Post(title="Today's News",
                             content=ai_news_text,
                             date_posted=timezone.now(),
                             author = get_object_or_404(User, username="AI_NEWS"),
-                            image = f"ai_images/{filename}"
+                            # image = f"ai_images/{filename}"
                             )
         ai_post.save()
 
