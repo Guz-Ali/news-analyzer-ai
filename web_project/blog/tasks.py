@@ -131,7 +131,6 @@ class AINewsGenerator:
                             content=ai_news_text,
                             date_posted=timezone.now(),
                             author = get_object_or_404(User, username="AI_NEWS"),
-                            # image = f"ai_images/{filename}"
                             )
         ai_post.save()
 
