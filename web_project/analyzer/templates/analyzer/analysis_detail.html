@@ -1,0 +1,31 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <article class="media content-section">
+        <img class="rounded-circle article-img" src="{{ object.author.profile.image.url }}">
+        <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2" href="{% url 'user-analyses' object.author.username %}">{{ object.author }}</a>
+                <small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
+                {% if object.author == user %}
+                    <div>
+                        <form method="POST" action="{% url 'analysis-publish' object.id %}"> 
+                            {% csrf_token %}
+                            <fieldset class="form-group">
+                            <button class="btn btn-secondary btn-sm mt-1 mb-1">Publish</a>
+                            {{ form|crispy }}
+                            </fieldset>
+                        </form>
+                        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'analysis-delete' object.id %}">Delete</a>
+                    </div>
+                {% endif %}
+            </div>
+            <h2 class="article-title">{{ object.title }}</h2>
+            <p class="analysis-keywords">Keywords: {{ object.keywords }}</p>
+            <p class="analysis-prompt">Prompt: {{ object.prompt }}</p>
+            <p class="analysis-findings">Findings: {{ object.findings }}</p>
+            <p class="analysis-date_range_start">Date Range Start: {{ object.date_range_start }}</p>
+            <p class="analysis-date_range_end">Date Range End: {{ object.date_range_end }}</p>
+        </div>
+    </article>
+{% endblock content %}

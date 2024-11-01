@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = config["DEBUG"]
 
 ALLOWED_HOSTS = ["www.aliguzelyel.com", config["IP_ADDRESS"]]
 
@@ -38,6 +38,7 @@ ALLOWED_HOSTS = ["www.aliguzelyel.com", config["IP_ADDRESS"]]
 INSTALLED_APPS = [
     "blog.apps.BlogConfig",
     "user.apps.UserConfig",
+    "analyzer.apps.AnalyzerConfig",
     "crispy_forms",
     "crispy_bootstrap4",
     "django.contrib.admin",
