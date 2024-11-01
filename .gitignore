@@ -13,3 +13,4 @@ media
 .venv
 venv/
 web_project/static/
+.DS_Store

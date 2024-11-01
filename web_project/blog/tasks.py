@@ -5,6 +5,10 @@ from .models import Post
 import json
 import google.generativeai as genai
 from newsapi import NewsApiClient
+import os
+from django.conf import settings
+import requests
+import random
 
 
 class NewsClient:
@@ -19,6 +23,11 @@ class NewsClient:
         if not hasattr(self, "client_creds"):
             self.client_creds = {}
         self.client_creds["NEWS_API_KEY"] = config["NEWS_API_KEY"]
+        self.creds = {}
+        self.creds["GEMINI_API_KEY"] = config["GEMINI_API_KEY"]
+        self.creds["NEWS_API_KEY"] = config["NEWS_API_KEY"]
+        self.creds["PROMPT"] = config["PROMPT"]
+        self.creds["AI_IMAGE"] = config["AI_IMAGE"] # There is no API currently in the server!
 
     def _set_client(self):
         self.client = NewsApiClient(api_key=self.client_creds["NEWS_API_KEY"])
@@ -111,6 +120,35 @@ class AINewsGenerator(NewsClient, AIModel):
     def generate_ai_text(self, prompt):
         response = self.model.generate_content(prompt)
         return response.text
+    
+    def generate_ai_image(self, prompt):
+        api_key = self.creds["AI_IMAGE"]
+        r = requests.post(
+        "https://api.deepai.org/api/text2img",
+        data={
+            'text': f'create a header image for this news, make it realistic: {prompt}', # Prompt can be changed
+        },
+        headers={'api-key': api_key}
+        )
+        url = f"{r.json()['share_url']}"
+        
+        if url:
+            output_dir = os.path.join(settings.MEDIA_ROOT, 'ai_images')
+            os.makedirs(output_dir, exist_ok=True)
+            
+            filename = f"image{random.randint(0, 100000)}.jpg" # The filename can be changed to something better.
+            image_path = os.path.join(output_dir, filename)
+            
+            response = requests.get(url)
+            if response.status_code == 200:
+                with open(image_path, 'wb') as f:
+                    f.write(response.content)
+            
+            return filename
+        
+        else:
+            return None
+        
 
     def create_ai_post(self, ai_news_text):
         ai_post = Post(
