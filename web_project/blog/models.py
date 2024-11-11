@@ -27,7 +27,7 @@ class NewsCard(models.Model):
     date_posted = models.DateTimeField(default=timezone.now) 
     date_created = models.DateTimeField(auto_now_add=True)
     url_of_the_news = models.URLField()
-    summary = models.TextField(max_length=100) #can be changed later.
+    summary = models.TextField(max_length=500) #can be changed later.
     image = models.ImageField(upload_to='ai_images/', null= True, blank= True, default="ai_default.jpg")
     is_public = models.BooleanField(default=True)
     
