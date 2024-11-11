@@ -2,9 +2,6 @@ import re
 from datetime import datetime
 
 def newsParser(text_block):
-    print("DEBUG: Full text block received:")
-    print(repr(text_block))
-
     pattern = (
         r"(?P<title>.*?)\s*\n"                
         r"(?P<source>.*?)\s*\n"               
@@ -15,8 +12,7 @@ def newsParser(text_block):
     
     news_items = []
     matches = list(re.finditer(pattern, text_block, re.DOTALL))
-    print(f"DEBUG: Number of matches found: {len(matches)}")
-
+    
     for match in matches:
         title = match.group("title").strip()
         source = match.group("source").strip()

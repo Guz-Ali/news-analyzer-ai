@@ -131,7 +131,11 @@ class AINewsGenerator(NewsClient, AIModel):
             headers={'api-key': api_key}
         )
         
-        if r.status_code == 200:
+        
+        
+        if r.status_code != 200:
+            return "ai_images/ai_default.jpg"
+        else:
             image_url = r.json().get("output_url")
             if image_url:
                 output_dir = os.path.join(settings.MEDIA_ROOT, 'ai_images')
@@ -144,8 +148,6 @@ class AINewsGenerator(NewsClient, AIModel):
                     with open(image_path, 'wb') as f:
                         f.write(response.content)
                     return f"ai_images/{filename}"
-            
-        return "ai_images/ai_default.jpg"
 
         
 
@@ -154,6 +156,6 @@ class AINewsGenerator(NewsClient, AIModel):
             title="Today's News",
             content=ai_news_text,
             date_posted=timezone.now(),
-            author=get_object_or_404(User, username="AI_NEWS"),
+            author=get_object_or_404(User, username="enesdemirel"),
         )
         ai_post.save()
