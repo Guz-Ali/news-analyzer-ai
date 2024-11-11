@@ -124,30 +124,31 @@ class AINewsGenerator(NewsClient, AIModel):
     def generate_ai_image(self, prompt):
         api_key = self.creds["AI_IMAGE"]
         r = requests.post(
-        "https://api.deepai.org/api/text2img",
-        data={
-            'text': f'create a header image for this news, make it realistic: {prompt}', # Prompt can be changed
-        },
-        headers={'api-key': api_key}
+            "https://api.deepai.org/api/text2img",
+            data={
+                'text': f'create a header image for this news, make it realistic: {prompt}',
+            },
+            headers={'api-key': api_key}
         )
-        url = f"{r.json()['share_url']}"
         
-        if url:
-            output_dir = os.path.join(settings.MEDIA_ROOT, 'ai_images')
-            os.makedirs(output_dir, exist_ok=True)
-            
-            filename = f"image{random.randint(0, 100000)}.jpg" # The filename can be changed to something better.
-            image_path = os.path.join(output_dir, filename)
-            
-            response = requests.get(url)
-            if response.status_code == 200:
-                with open(image_path, 'wb') as f:
-                    f.write(response.content)
-            
-            return filename
         
+        
+        if r.status_code != 200:
+            return "ai_images/ai_default.jpg"
         else:
-            return None
+            image_url = r.json().get("output_url")
+            if image_url:
+                output_dir = os.path.join(settings.MEDIA_ROOT, 'ai_images')
+                os.makedirs(output_dir, exist_ok=True)
+                filename = f"image_{random.randint(0, 100000)}.jpg"
+                image_path = os.path.join(output_dir, filename)
+                
+                response = requests.get(image_url)
+                if response.status_code == 200:
+                    with open(image_path, 'wb') as f:
+                        f.write(response.content)
+                    return f"ai_images/{filename}"
+
         
 
     def create_ai_post(self, ai_news_text):
@@ -155,6 +156,6 @@ class AINewsGenerator(NewsClient, AIModel):
             title="Today's News",
             content=ai_news_text,
             date_posted=timezone.now(),
-            author=get_object_or_404(User, username="AI_NEWS"),
+            author=get_object_or_404(User, username="enesdemirel"),
         )
         ai_post.save()
