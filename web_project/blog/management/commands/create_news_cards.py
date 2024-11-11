@@ -1,13 +1,13 @@
 from django.core.management.base import BaseCommand
 from blog.models import NewsCard
-from blog.utils import newsParser
+from blog.utils import news_parser
 from django.utils import timezone
 from blog.tasks import AINewsGenerator
 import os
 from django.utils import timezone
 
 def create_newscard(text_block):
-    news_items = newsParser(text_block)
+    news_items = news_parser(text_block)
 
     for index, item in enumerate(news_items, start=1):
         try:

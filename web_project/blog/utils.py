@@ -1,7 +1,7 @@
 import re
 from datetime import datetime
 
-def newsParser(text_block):
+def news_parser(text_block):
     pattern = (
         r"(?P<title>.*?)\s*\n"                
         r"(?P<source>.*?)\s*\n"               
