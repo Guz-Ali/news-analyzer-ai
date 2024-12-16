@@ -54,24 +54,20 @@ const Layout = () => {
         <Outlet />
       </main>
 
-      {/* Mobile Sidebar */}
       <div 
         className={`fixed inset-0 z-50 md:hidden transition-opacity duration-300 ease-in-out
           ${isSidebarOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
       >
-        {/* Dark overlay with transition */}
         <div 
           className={`absolute inset-0 bg-black/50 transition-opacity duration-300 ease-in-out
             ${isSidebarOpen ? 'opacity-100' : 'opacity-0'}`}
           onClick={() => setIsSidebarOpen(false)}
         />
 
-        {/* Sidebar with slide transition */}
         <div 
           className={`absolute top-0 left-0 w-64 h-full bg-white transform transition-transform duration-300 ease-in-out
             ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
         >
-          {/* Sidebar Header */}
           <div className="flex items-center justify-between p-4 border-b">
             <h2 className="text-lg font-semibold">Menu</h2>
             <button
@@ -106,4 +102,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export default Layout

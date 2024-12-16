@@ -1,4 +1,24 @@
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { createNewsPath } from './urls'; 
+
 const NewsCard = ({ news }) => {
+  const navigate = useNavigate();
+
+  const handleReadMore = () => {
+    const urlTitle = news.title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    
+    navigate(createNewsPath(urlTitle), { 
+      state: { 
+        news,
+        date: news.date 
+      } 
+    });
+  };
+
   return (
     <div className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 h-full flex flex-col">
       <div className="aspect-[16/9] w-full overflow-hidden rounded-t-lg">
@@ -18,8 +38,11 @@ const NewsCard = ({ news }) => {
           {news.summary}
         </p>
         
-        <div className="mt-auto pt-3 flex justify-end">
-          <button className="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors duration-200">
+        <div className="mt-auto pt-3 flex justify-between items-center">
+          <button 
+            onClick={handleReadMore}
+            className="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors duration-200"
+          >
             Read More →
           </button>
         </div>

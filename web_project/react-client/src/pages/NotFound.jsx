@@ -7,7 +7,6 @@ const NotFound = () => {
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gray-50 px-4">
       <div className="text-center">
-        {/* SVG Illustration */}
         <div className="max-w-[350px] mx-auto mb-8">
           <svg
             viewBox="0 0 500 500"
@@ -16,10 +15,8 @@ const NotFound = () => {
             xmlns="http://www.w3.org/2000/svg"
           >
             <g clipPath="url(#clip0_0_1)">
-              {/* Background circle */}
               <circle cx="250" cy="250" r="200" fill="#f3f4f6" />
               
-              {/* 404 Text */}
               <text
                 x="250"
                 y="220"
@@ -45,7 +42,6 @@ const NotFound = () => {
           </svg>
         </div>
 
-        {/* Text content */}
         <div className="mb-8">
           <h1 className="text-6xl font-bold text-gray-900 mb-3">Oops!</h1>
           <h2 className="text-3xl font-semibold text-gray-700 mb-4">
@@ -57,7 +53,6 @@ const NotFound = () => {
           </p>
         </div>
 
-        {/* Action buttons */}
         <div className="space-x-4">
           <button
             onClick={() => navigate('/')}

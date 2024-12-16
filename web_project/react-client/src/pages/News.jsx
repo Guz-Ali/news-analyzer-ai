@@ -2,12 +2,12 @@ import React from 'react';
 import NewsContainer from '../components/NewsContainer';
 
 
-const Home = () => {
+const News = () => {
   return (
-    <h1>
-      Welcome to News App
-    </h1>
+    <div>
+        <NewsContainer />
+    </div>
   )
 }
 
-export default Home
+export default News

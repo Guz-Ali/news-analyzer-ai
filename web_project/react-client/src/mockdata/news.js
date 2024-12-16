@@ -1,5 +1,3 @@
-// src/mockdata/news.js
-
 const newsTopics = {
     ai: {
       titles: [
@@ -115,18 +113,15 @@ const newsTopics = {
     };
   };
   
-  // Bugünün tarihini al ve UTC'ye çevir
   const getCurrentDate = () => {
     const now = new Date();
     return new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
   };
   
-  // Tarihi YYYY-MM-DD formatına çevir
   const formatDate = (date) => {
     return date.toISOString().split('T')[0];
   };
   
-  // Son 5 günün tarihlerini oluştur (bugün dahil)
   const generateDates = () => {
     const today = getCurrentDate();
     const dates = [];
@@ -140,20 +135,17 @@ const newsTopics = {
     return dates;
   };
   
-  // Tarihleri oluştur
   const dates = generateDates();
   console.log('Generated dates:', dates);
   
-  // Mock data'yı oluştur
   export const mockNewsData = dates.reduce((acc, date) => {
-    // Her gün için 7 haber oluştur
+
     acc[date] = Array.from({ length: 7 }, (_, index) => {
       const newsContent = generateNewsContent(
         Object.keys(newsTopics)[index % Object.keys(newsTopics).length],
         index
       );
       
-      // Haber için rastgele saat oluştur
       const hour = String(Math.floor(Math.random() * 24)).padStart(2, '0');
       const minute = String(Math.floor(Math.random() * 60)).padStart(2, '0');
       const second = String(Math.floor(Math.random() * 60)).padStart(2, '0');
@@ -168,7 +160,6 @@ const newsTopics = {
     return acc;
   }, {});
   
-  // Debug için kontrol logları
   console.log('Today:', formatDate(getCurrentDate()));
   console.log('Available dates in mockNewsData:', Object.keys(mockNewsData).sort());
   console.log('Sample news for latest date:', mockNewsData[dates[dates.length - 1]][0]);

@@ -1,11 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import { urls } from '../components/urls';
 import Home from '../pages/Home';
 import About from '../pages/About';
 import Analysis from '../pages/Analysis';
 import Layout from '../components/Layout';
 import NotFound from '../pages/NotFound';
+import NewsDetail from '../pages/NewsDetail';
+import News from '../pages/News';
 
 
 const AppRouter = () => {
@@ -16,9 +17,10 @@ const AppRouter = () => {
                 <Route index element={<Home />} />
                 <Route path="about" element={<About />} />
                 <Route path="analysis" element={<Analysis />} />
+                <Route path="news" element={<News />} />
+                <Route path="news/:newsTitle" element={<NewsDetail />} />
             </Route>
             
-            {/* NotFound route outside Layout */}
             <Route path="*" element={<NotFound />} />
         </Routes>
     </Router>
