@@ -1,6 +1,6 @@
 package com.curatedNews.curatedNews.news;
 
-import com.curatedNews.curatedNews.news.contacts.NewsClient;
+import com.curatedNews.curatedNews.news.apis.newsapi.NewsApiClient;
 import com.curatedNews.curatedNews.news.model.News;
 import com.curatedNews.curatedNews.news.model.Source;
 import com.curatedNews.curatedNews.repositories.NewsRepository;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class NewsService {
     private final NewsRepository newsRepository;
-    private final NewsClient newsClient;
+    private final NewsApiClient newsApiClient;
 
     public List<News> getTodayNews() {
         var startOfDay = LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC);
@@ -30,7 +30,7 @@ public class NewsService {
     public void generateNews() {
         List<News> externalNews;
         try {
-            externalNews = new ArrayList<>(newsClient.generateNews()); //TODO: externalnews entity / record.
+            externalNews = new ArrayList<>(newsApiClient.generateNews()); //TODO: externalnews entity / record.
         } catch(Exception e) {
             log.error(e.getMessage());
             return;

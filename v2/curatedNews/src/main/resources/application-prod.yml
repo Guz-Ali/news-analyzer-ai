@@ -4,15 +4,23 @@ spring:
     username: ${DB_USER}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
-
   jpa:
     properties:
       hibernate:
         default_schema: curated
-
   flyway:
     schemas: curated
-
 logging:
   level:
     root: WARN
+encryption:
+  password: ${ENCRYPTION_PASSWORD}
+  salt: ${ENCRYPTION_SALT}
+
+# AT THE PROD ENV, set these values:
+#  export SPRING_PROFILES_ACTIVE=prod
+#  export DB_URL=your-db-url
+#  export DB_USER=your-db-user
+#  export DB_PASSWORD=your-db-password
+#  export ENCRYPTION_PASSWORD=your-secret
+#  export ENCRYPTION_SALT=your-salt

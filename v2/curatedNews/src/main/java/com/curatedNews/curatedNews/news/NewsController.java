@@ -1,7 +1,6 @@
-package com.curatedNews.curatedNews.controllers;
+package com.curatedNews.curatedNews.news;
 
 import com.curatedNews.curatedNews.news.model.News;
-import com.curatedNews.curatedNews.news.NewsService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

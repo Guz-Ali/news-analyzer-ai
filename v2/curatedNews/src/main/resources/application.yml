@@ -1,6 +1,8 @@
 spring:
   application:
     name: curatedNews
+  profiles:
+    active: local
   datasource:
     url: jdbc:postgresql://localhost:5432/curatednews
     username: postgres
